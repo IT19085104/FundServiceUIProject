@@ -30,6 +30,9 @@ $(document).on("click", "#btnSave", function(event) {
 		$("#alertError").show();
 		return;
 	}
+	
+	
+	
 
 	// If valid-----------------------
 	var type = ($("#hidIDSave").val() == "") ? "POST" : "PUT";
@@ -57,7 +60,7 @@ $(document).on("click",".btnUpdate",function(event) {
 		});
 
 
-//remove data
+// remove data
 $(document).on("click", ".btnRemove", function(event) {
 	$.ajax({
 		url : "FundsAPI",
@@ -129,8 +132,6 @@ function validateFundForm() {
 	if ($("#comments").val().trim() == "") {
 		return "Please add any comments.";
 	}
-
-	
 
 	return true;
 }
