@@ -1,18 +1,12 @@
 $(document).ready(function() {
 
-	$("#alertSuccess").hide();
-	$("#alertError").hide();
-	$('#Datable').DataTable();
+	if ($("#alertSuccess").text().trim() == "") 
+	 { 
+	 $("#alertSuccess").hide(); 
+	 } 
+	 $("#alertError").hide();
 });
-// adding a Datatable
-$('#fund-table').DataTable({
-	language : {
-		paginate : {
-			next : '<i class="ni ni-bold-right"></i>',
-			previous : '<i class="ni ni-bold-left"></i>'
-		}
-	},
-});
+
 
 // SAVE ============================================
 $(document).on("click", "#btnSave", function(event) {
@@ -50,6 +44,7 @@ $(document).on("click", "#btnSave", function(event) {
 
 });
 
+//UPDATE
 $(document).on("click",".btnUpdate",function(event) {
 			$("#hidIDSave").val($(this).data("ID"));
 			$("#funderID").val($(this).closest("tr").find('td:eq(0)').text());
@@ -60,7 +55,30 @@ $(document).on("click",".btnUpdate",function(event) {
 		});
 
 
-// remove data
+function onItemSaveComplete(response, status) {
+	if (status == "success") {
+		var resultSet = JSON.parse(response);
+		if (resultSet.status.trim() == "success") {
+			$("#alertSuccess").text("Successfully saved.");
+			$("#alertSuccess").show();
+			$("#divFundsGrid").html(resultSet.data);
+		} else if (resultSet.status.trim() == "error") {
+			$("#alertError").text(resultSet.data);
+			$("#alertError").show();
+		}
+	} else if (status == "error") {
+		$("#alertError").text("Error while saving.");
+		$("#alertError").show();
+	} else {
+		$("#alertError").text("Unknown error while saving..");
+		$("#alertError").show();
+	}
+	$("#hidIDSave").val("");
+	$("#formFund")[0].reset();
+}
+
+
+//REMOVE
 $(document).on("click", ".btnRemove", function(event) {
 	$.ajax({
 		url : "FundsAPI",
@@ -93,27 +111,7 @@ function onItemDeleteComplete(response, status) {
 }
 
 
-function onItemSaveComplete(response, status) {
-	if (status == "success") {
-		var resultSet = JSON.parse(response);
-		if (resultSet.status.trim() == "success") {
-			$("#alertSuccess").text("Successfully saved.");
-			$("#alertSuccess").show();
-			$("#divFundsGrid").html(resultSet.data);
-		} else if (resultSet.status.trim() == "error") {
-			$("#alertError").text(resultSet.data);
-			$("#alertError").show();
-		}
-	} else if (status == "error") {
-		$("#alertError").text("Error while saving.");
-		$("#alertError").show();
-	} else {
-		$("#alertError").text("Unknown error while saving..");
-		$("#alertError").show();
-	}
-	$("#hidIDSave").val("");
-	$("#formFund")[0].reset();
-}
+
 
 function validateFundForm() {
 

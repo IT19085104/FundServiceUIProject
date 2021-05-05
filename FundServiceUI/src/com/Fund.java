@@ -136,6 +136,7 @@ public class Fund {
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 // binding values
 			preparedStmt.setInt(1, Integer.parseInt(ID));
+			
 // execute the statement
 			preparedStmt.execute();
 			con.close();
